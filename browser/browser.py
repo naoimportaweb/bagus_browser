@@ -9,6 +9,7 @@ from PySide6.QtCore import Qt
 
 from browser.panel_myass import PanelMyass;
 from browser.panel_navigation import PanelNavigation;
+from browser.panel_download import PanelDownload;
 from browser.panel_play import PanelPlay;
 from browser.ui.private_profile import PrivateProfile;
 from browser.api.analyze import Analyze;
@@ -43,7 +44,7 @@ class Browser(QMainWindow):
         self.tab_principal.setDocumentMode(True);
         self.tab_page_browser = QWidget()
         self.tab_principal.addTab(self.tab_page_browser,    "Browser")
-        self.tab_page_download = QWidget()
+        self.tab_page_download = PanelDownload()
         self.tab_principal.addTab(self.tab_page_download,   "Download")
         self.tab_page_navigate = PanelNavigation()
         self.tab_principal.addTab(self.tab_page_navigate,   "Navigation")

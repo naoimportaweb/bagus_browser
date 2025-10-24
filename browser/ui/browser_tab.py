@@ -19,6 +19,9 @@ DEBUG_URL = 'http://127.0.0.1:%s' % DEBUG_PORT
 os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = DEBUG_PORT
 HISTORY_FILE = "history.json"
 
+
+#QtWebEngine.initialize();
+
 # js_back = """
 
 #         document.addEventListener("DOMContentLoaded", () => {

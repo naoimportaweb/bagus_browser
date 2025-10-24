@@ -91,6 +91,8 @@ class FormMyass(QDialog):
                     texto_buffer = "";
                     for data_get in child["data"]["html"]:
                         find_item_type = data_get.split(":")[0];
+                        if texto_buffer.strip() != "":
+                            texto_buffer += " - ";
                         if find_item_type == "regex":
                             compiled = re.compile( data_get.split(":")[2] );
                             list_result = compiled.findall(self.html);
@@ -100,7 +102,7 @@ class FormMyass(QDialog):
                                 else:
                                     texto_buffer += "  " + list_result[int(data_get.split(":")[1])];
                         elif find_item_type == "url":
-                            texto_buffer += " - " + self.url;
+                            texto_buffer += self.url;
                     input_element.setPlainText( texto_buffer.strip() );
             elif child["type"] == "panel":
                 layout = QVBoxLayout();

@@ -28,7 +28,7 @@ class PanelMyass(QWidget):
         layout.addWidget(self.tab_myass);
         self.setLayout(layout);
         #--------------------------- works --------------
-        self.table = Table.widget_tabela(self.parent_, ["result", "workflow"], double_click=self.table_double_click); #, 
+        self.table = Table.widget_tabela(self.parent_, ["result", "step", "workflow"], double_click=self.table_double_click); #, 
         layout = QVBoxLayout();
         layout.addWidget(self.table);
         btn_atualizar = QPushButton("Atualizar");
@@ -36,8 +36,12 @@ class PanelMyass(QWidget):
         btn_atualizar.clicked.connect(self.btn_atualizar_click);
         self.tab_myass_works.setLayout(layout);
     def table_double_click(self, item):
-        f = FormWork(self.table.lista[self.table.currentRow()]);
-        f.exec_();
+        work = self.table.lista[self.table.currentRow()];
+        if len(json.loads(work["result"]).keys()) > 0:
+            f = FormWork(work);
+            f.exec_();
+        else:
+            print(work);
         pass;
     
     def _loadFinished(self):
@@ -46,7 +50,7 @@ class PanelMyass(QWidget):
     def callable_text(self, data):
         self.html = data;
         js = json.loads( data );
-        data = self.page.decrypt_array( js["data"], ["data", "result", "step", "workflow"] );
+        data = self.page.decrypt_array( js["data"], ["data", "result", "step", "workflow", "input"] );
         self.atualizar_grid( data );
 
     def btn_atualizar_click(self):
@@ -58,7 +62,7 @@ class PanelMyass(QWidget):
         trabalhos = self.formata_trabalhos(trabalhos);
         self.table.cleanList();
         for i in range(len(trabalhos)):
-            self.table.add([trabalhos[i]["result"], trabalhos[i]["workflow"]], trabalhos[i]);
+            self.table.add([trabalhos[i]["result"], trabalhos[i]["step"], trabalhos[i]["workflow"]], trabalhos[i]);
     
     def formata_trabalhos(self, trabalhos):
         retorno = [];
@@ -75,7 +79,10 @@ class PanelMyass(QWidget):
             work = trabalho["data"];
             if work == None:
                 work = "";
-            retorno.append({"workflow" : workflow, "step" : step, "result" : result, "work" : work});
+            input_ = trabalho.get("input");
+            if input_ == None:
+                input_ = "";
+            retorno.append({"workflow" : workflow, "step" : step, "result" : result, "work" : work, "input" : input_});
         return retorno;
 
 class FormWork(QDialog):
@@ -83,6 +90,7 @@ class FormWork(QDialog):
         super().__init__();
         self.resize(600, 320);
         self.work = work;
+        print(work);
         layout = QGridLayout();
         layout.setContentsMargins(20, 20, 20, 20);
         layout.setSpacing(10);

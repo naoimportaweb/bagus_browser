@@ -6,11 +6,15 @@ os.environ["BROWSER_SECURE"] = "0";
 os.environ["USER_BROWSER_PATH"] = "";
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--enable-logging --log-level=3"
 
+#from PySide6.QtWebEngine import QtWebEngine
+#from PySide6.QtWebEngineCore import QtWebEngine
+#from PySide6.QtWebEngineQuick import QtWebEngineQuick
 from PySide6.QtWidgets import QApplication
 from browser.browser import Browser;
 from browser.form_login import FormLogin;
 
 def main():
+    #QtWebEngineQuick.initialize();
     app = QApplication(sys.argv)
     f = FormLogin();
     f.exec();
