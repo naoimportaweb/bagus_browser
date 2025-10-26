@@ -1,0 +1,7 @@
+{
+    "elements" : [
+    {"name" : "panel_proxy", "type" : "panel", "database" : { "file" : null, "type" : "json"}, "elements" : [
+        {"name" : "txt_name",  "type" : "varchar", "label" : "Name:",  "field" : "name"},
+        {"name" : "txt_url" ,  "type" : "varchar", "label" : "Url:",   "field" : "url"}
+    ] } 
+]}

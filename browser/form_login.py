@@ -42,7 +42,10 @@ class FormLogin(QDialog):
                 criar_se_nao_existir(os.path.join(    self.diretorio, "analyze" ));
                 criar_se_nao_existir(os.path.join(    self.diretorio, "analyze", "pending" ));
                 criar_se_nao_existir(os.path.join(    self.diretorio, "default" ));
+                criar_se_nao_existir(os.path.join(    self.diretorio, "config_v1" ));
                 os.environ["USER_BROWSER_PATH"] =     self.diretorio;
+                os.environ["BROWSER_CONFIG"] =        "config_v1";
+
                 self.close();
     
     def txt_login_username_click(self):

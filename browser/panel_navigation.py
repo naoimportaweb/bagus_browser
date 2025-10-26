@@ -37,6 +37,7 @@ class PanelNavigation(QWidget):
     def load_scripts(self):
         dir_scripts = os.path.join( BROWSER_PATH, "browser", "resources", "scripts_block" );
         files = os.listdir( dir_scripts );
+        self.tab_navigation_scripts_table.cleanList();
         for file in files:
             dir_script = os.path.join( dir_scripts, file );
             js_script = json.loads( open( dir_script, "r" ).read() );

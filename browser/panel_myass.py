@@ -3,7 +3,7 @@ import tldextract, sys, uuid, json, os, importlib, traceback
 BROWSER_PATH = os.environ["BROWSER_PATH"]
 sys.path.append( BROWSER_PATH );
 
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QGridLayout, QTextEdit, QWidget, QTabWidget, QPushButton, QMessageBox, QTabWidget
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QLineEdit, QGridLayout, QTextEdit, QWidget, QTabWidget, QPushButton, QMessageBox, QTabWidget
 from PySide6.QtCore import Qt
 
 from browser.ui.table import *
@@ -123,6 +123,9 @@ class FormWork(QDialog):
                 if child.get("data") != None:
                     texto_buffer = json.loads(self.work["result"])[   child["data"]["field"]    ];
                     input_element.setPlainText( texto_buffer.strip() );
+            elif child["type"] == "varchar":
+                input_element = QLineEdit();
+                layout_root.addWidget(input_element);
             elif child["type"] == "panel":
                 layout = QVBoxLayout();
                 widget1 = QWidget();

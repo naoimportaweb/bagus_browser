@@ -5,6 +5,10 @@ os.environ["BROWSER_PATH"] = BROWSER_PATH;
 os.environ["BROWSER_SECURE"] = "0";
 os.environ["USER_BROWSER_PATH"] = "";
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--enable-logging --log-level=3"
+os.environ["BROWSER_CONFIG"] =        "config_v1";
+DEBUG_PORT = '5588'
+DEBUG_URL = 'http://127.0.0.1:%s' % DEBUG_PORT
+os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = DEBUG_PORT
 
 #from PySide6.QtWebEngine import QtWebEngine
 #from PySide6.QtWebEngineCore import QtWebEngine
@@ -12,9 +16,10 @@ os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--enable-logging --log-level=3"
 from PySide6.QtWidgets import QApplication
 from browser.browser import Browser;
 from browser.form_login import FormLogin;
+from browser.form_generic import FormGeneric;
 
 def main():
-    #QtWebEngineQuick.initialize();
+    #QtWebEngineQuick.initialize(); # descobri que nao é necessário
     app = QApplication(sys.argv)
     f = FormLogin();
     f.exec();

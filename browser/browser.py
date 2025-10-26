@@ -14,10 +14,8 @@ from browser.panel_play import PanelPlay;
 from browser.ui.private_profile import PrivateProfile;
 from browser.api.analyze import Analyze;
 from browser.ui.browser_tab import BrowserTab;
+from browser.panel_settings import PanelSettings;
 
-DEBUG_PORT = '5588'
-DEBUG_URL = 'http://127.0.0.1:%s' % DEBUG_PORT
-os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = DEBUG_PORT
 HISTORY_FILE = "history.json"
 
 def is_valid_url(url):
@@ -53,12 +51,12 @@ class Browser(QMainWindow):
         self.tab_page_disroot = QWidget()
         self.tab_principal.addTab(self.tab_page_disroot,    "Disroot")
         self.tab_page_play = PanelPlay()
-        self.tab_principal.addTab(self.tab_page_play,    "Play")
+        self.tab_principal.addTab(self.tab_page_play,       "Play")
         self.tab_page_xmpp = QWidget()
         self.tab_principal.addTab(self.tab_page_xmpp,       "XMPP Chat")
         self.tab_page_extension = QWidget()
         self.tab_principal.addTab(self.tab_page_extension,  "Extension")
-        self.tab_page_settings = QWidget()
+        self.tab_page_settings = PanelSettings()
         self.tab_principal.addTab(self.tab_page_settings,  "Settings")
         self.tab_principal.setTabPosition(QTabWidget.TabPosition.West);
         self.setCentralWidget(self.tab_principal)
