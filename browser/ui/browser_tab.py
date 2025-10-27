@@ -20,44 +20,6 @@ os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = DEBUG_PORT
 HISTORY_FILE = "history.json"
 
 
-#QtWebEngine.initialize();
-
-# js_back = """
-
-#         document.addEventListener("DOMContentLoaded", () => {
-#         console.log("load");    
-#             var backend = null;
-#             console.log("antes");
-#             console.log(qt);
-#                 new QWebChannel(qt.webChannelTransport, function(channel) {
-#                     console.log("Channel", channel);
-#                     backend = channel.objects.backend;
-#                     console.log("Backend", backend);
-#                     var x = {a: "1000", b: ["Hello", "From", "JS"]}
-#                     alert(3);
-#                     backend.getRef(JSON.stringify(x), function(y) {
-#                         //js_obj = JSON.parse(y);
-#                         //js_obj["f"] = false;
-#                         //backend.printRef(JSON.stringify(js_obj));
-#                         //alert(4);
-#                     });
-#                 });
-#             console.log("fim");
-#         });
-# """
-
-# class Backend(QObject):
-#     @Slot(str, result=str)
-#     def getRef(self, o):
-#         print("inside getRef", o)
-#         py_obj = json.loads(o)
-#         py_obj["c"] = ("Hello", "from", "Python")
-#         return json.dumps(py_obj)
-#     @Slot(str)
-#     def printRef(self, o):
-#         py_obj = json.loads(o)
-#         print("inside printRef", py_obj)
-
 class BrowserTab(QWidget):
     def __init__(self, browser, url=None, parent=None):
         super().__init__(parent)
@@ -116,25 +78,6 @@ class BrowserTab(QWidget):
         if url != None:
             self.url_bar.setText(url);
             self.load_url();
-
-    def set_proxy_socks5(self, ip="127.0.0.1", port=9050):
-        proxy = QNetworkProxy();
-        proxy.setType(QNetworkProxy.Socks5Proxy);
-        proxy.setHostName( ip   );
-        proxy.setPort(     port );
-        QNetworkProxy.setApplicationProxy(proxy);
-
-    def set_proxy_http(self, ip="127.0.0.1", port=8080):
-        proxy = QNetworkProxy()
-        proxy.setType(QNetworkProxy.HttpProxy)
-        proxy.setHostName( ip   );
-        proxy.setPort(     port );
-        QNetworkProxy.setApplicationProxy(proxy)
-
-    def set_proxy_clear(self):
-        proxy = QNetworkProxy()
-        proxy.setType(QNetworkProxy.NoProxy)
-        QNetworkProxy.setApplicationProxy(proxy)
 
     def bt1_click(self):
         self.inspector = QWebEngineView()

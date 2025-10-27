@@ -20,6 +20,7 @@ class PanelMyassWorkflow(QWidget):
         layout.addWidget(btn_atualizar);
         btn_atualizar.clicked.connect(self.btn_atualizar_click);
         self.setLayout(layout);
+        self.btn_atualizar_click();
     def btn_atualizar_click(self):
         self.page = MyassHelper(parent=self.parent_);
         self.page.loadFinished.connect(self._loadFinished);

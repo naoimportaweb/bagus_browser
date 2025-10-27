@@ -1,9 +1,9 @@
 {
-            "elements" : [
-                {"name" : "panel_exemple", "type" : "panel", "database" : { "file" : "~/bagus/myass.json", "type" : "json"}, "elements" : [
-                    {"name" : "txt_url",   "type" : "text", "label" : "URL:",  "field" :  "url"},
-                    {"name" : "txt_name",  "type" : "varchar", "label" : "Name:", "field" : "name"},
-                    {"name" : "txt_token", "type" : "secret", "label" : "Token:", "field" : "token"},
-                    {"name" : "txt_key",   "type" : "secret", "label" : "Key:",   "field" : "key"}
-                ] } 
-            ]}
+"elements" : [
+    {"name" : "panel_exemple", "type" : "panel", "database" : { "file" : "~/bagus/myass.json", "type" : "json"}, "elements" : [
+        {"name" : "txt_url",   "type" : "text",    "label" : "URL:",   "field" : "url"},
+        {"name" : "txt_name",  "type" : "varchar", "label" : "Name:",  "field" : "name"},
+        {"name" : "txt_token", "type" : "secret",  "label" : "Token:", "field" : "token"},
+        {"name" : "txt_key",   "type" : "secret",  "label" : "Key:",   "field" : "key"}
+    ] } 
+]}

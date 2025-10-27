@@ -24,10 +24,13 @@ class MyassHelper(QWebEnginePage):
     def __init__(self, parent=None):
         super().__init__(parent=parent);
         self.path_config = os.path.join(os.path.expanduser("~/bagus/"), "myass.json");
-        if os.path.exists(self.path_config):
-            self.config = json.loads( open(self.path_config, "r").read() );
+        self.config = None;
+        if not os.path.exists(self.path_config):
+            self.config = {"url" : "https://wellington.tec.br/myass/", "token" : "UmaChaveSimetrica",  "name"  : "publico", "key"   : "UmaChaveSimetric", "algorithm" : "AES-256" };
+            with open(self.path_config, "w") as f:
+                f.write( json.dumps( self.config, ensure_ascii=False ) );
         else:
-            self.config = None;
+            self.config = json.loads( open(self.path_config, "r").read() );
 
     def load_config(self):
         self.path_config = os.path.join(os.path.expanduser("~/bagus/"), "myass.json");

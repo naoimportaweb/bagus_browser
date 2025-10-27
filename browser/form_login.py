@@ -40,6 +40,8 @@ class FormLogin(QDialog):
                 self.diretorio = os.path.join("/tmp", self.txt_login_username.text() );
                 criar_se_nao_existir(os.path.join(    self.diretorio, "log" ));
                 criar_se_nao_existir(os.path.join(    self.diretorio, "analyze" ));
+                criar_se_nao_existir(os.path.join(    self.diretorio, "download" ));
+                criar_se_nao_existir(os.path.join(    self.diretorio, "tmp" ));
                 criar_se_nao_existir(os.path.join(    self.diretorio, "analyze", "pending" ));
                 criar_se_nao_existir(os.path.join(    self.diretorio, "default" ));
                 criar_se_nao_existir(os.path.join(    self.diretorio, "config_v1" ));

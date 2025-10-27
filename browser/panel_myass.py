@@ -9,7 +9,7 @@ from PySide6.QtCore import Qt
 from browser.ui.table import *
 from browser.panel_myass_workflow import PanelMyassWorkflow;
 from browser.api.myass_helper import *
-
+from browser.ui.data_widget import DataWidget;
 
 class PanelMyass(QWidget):
     def __init__(self, parent=None):
@@ -22,7 +22,8 @@ class PanelMyass(QWidget):
         self.tab_myass.addTab(self.tab_myass_works,    "Tasks")
         self.tab_myass_workflow = PanelMyassWorkflow(self.parent_)
         self.tab_myass.addTab(self.tab_myass_workflow, "Workflow");
-        self.tab_myass_settings = QWidget()
+        self.DIR_MYASS_TEMPLATE = os.path.join( os.environ["BROWSER_PATH"], "browser", "resources", "template", "myass.json" );
+        self.tab_myass_settings = DataWidget( json.loads( open(self.DIR_MYASS_TEMPLATE, "r").read() ) );
         self.tab_myass.addTab(self.tab_myass_settings, "Settings");
         layout = QVBoxLayout();
         layout.addWidget(self.tab_myass);
@@ -35,6 +36,8 @@ class PanelMyass(QWidget):
         layout.addWidget(btn_atualizar);
         btn_atualizar.clicked.connect(self.btn_atualizar_click);
         self.tab_myass_works.setLayout(layout);
+        self.btn_atualizar_click();
+        
     def table_double_click(self, item):
         work = self.table.lista[self.table.currentRow()];
         if len(json.loads(work["result"]).keys()) > 0:

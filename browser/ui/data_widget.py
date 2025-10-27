@@ -6,11 +6,14 @@ from PySide6.QtWidgets import (QWidget, QLineEdit, QMessageBox, QTextEdit, QDial
 BROWSER_PATH = os.environ["BROWSER_PATH"]
 sys.path.append( BROWSER_PATH );
 
+from browser.ui.combobox import ComboBox;
+
 class DataWidget(QWidget):
-    def __init__(self, layout_js):
+    def __init__(self, layout_js, callback=None):
         super().__init__();
         self.layout_js = layout_js;
         self.layout = QVBoxLayout();
+        self.callback = callback;
         self.setLayout(self.layout);
         self.load_data(self.layout_js["elements"]);
         self.criar_layout( self.layout, self.layout_js["elements"], None);
@@ -19,6 +22,7 @@ class DataWidget(QWidget):
         #self.btn_close = QPushButton("Close");
         self.btn_salvar.clicked.connect(self.btn_salvar_click)
         self.widget_linha(self.layout, [self.btn_salvar], stretch_inicio=True, stretch_fim=False);
+        self.saved_buffer = None;
 
     def save_data(self, elements, data, database=None):
         for child in elements:
@@ -30,14 +34,22 @@ class DataWidget(QWidget):
             elif child["type"] == "text" or child["type"] == "url":
                 if data != None:
                     data[ child["field"] ] =  child["input"].toPlainText();
+            elif child["type"] == "combobox":
+                if data != None:
+                    data[ child["field"] ] = child["input"].lista[child["input"].currentIndex()];
         if data != None and database != None:
             if database["type"] == "json":
+                self.saved_buffer.append( data );
                 with open( database["file"], "w" ) as f:
                     f.write( json.dumps( data , ensure_ascii=False) );
 
     def btn_salvar_click(self):
+        self.saved_buffer = [];
         self.save_data(self.layout_js["elements"], None);
         #self.close();
+        if self.callback != None:
+            buffer = {};
+            self.callback(self.saved_buffer);
         msgBox = QMessageBox();
         msgBox.setText("Done!!!");
         msgBox.exec();
@@ -78,6 +90,28 @@ class DataWidget(QWidget):
                 if data != None:
                     input_element.setText( data.get(child["field"]) );
                 child["input"] = input_element;
+                self.widget_linha(layout_root, [input_label, input_element]);
+            elif child["type"] == "combobox":
+                input_label = QLabel(child["label"]);
+                input_element = ComboBox(self);
+                input_element.add("", None);
+                index_selected = 0;
+                i = 1;
+                for file in os.listdir( child["font"]["directory"] ):
+                    try:
+                        path_file = os.path.join( child["font"]["directory"], file );
+                        print(data.get(child["field"]) , path_file);
+                        if data != None and data.get(child["field"]) == path_file:
+                            index_selected = i;
+                        js = json.loads( open( path_file, "r" ).read() );
+                        input_element.add( js[child["font"]["field"]], path_file );
+                    except:
+                        traceback.print_exc();
+                    finally:
+                        i = i + 1;
+                #layout_root.addWidget( input_element );
+                child["input"] = input_element;
+                input_element.setCurrentIndex(index_selected);
                 self.widget_linha(layout_root, [input_label, input_element]);
             elif child["type"] == "panel":
                 layout = QVBoxLayout();

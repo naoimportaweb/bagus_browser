@@ -24,10 +24,8 @@ class WebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
         self.logger_block = setup_logger( "block", os.path.join( os.environ["USER_BROWSER_PATH"], "log", "block.log"));
     
     def interceptRequest(self, info):
-        #info.redirect("http://www.google.com");
         url = info.requestUrl().toString();
         ex = tldextract.extract( url );
-        #extensao = url[ url.rfind(".") :];
         if not self.analyze.allow(url):
             info.block(True);
         domain = ex.subdomain + "." + ex.domain + "." + ex.suffix;
