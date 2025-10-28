@@ -57,8 +57,9 @@ class Browser(QMainWindow):
         self.tab_page_extension = QWidget()
         self.tab_principal.addTab(self.tab_page_extension,  "Extension")
         self.tab_page_settings = PanelSettings()
-        self.tab_principal.addTab(self.tab_page_settings,  "Settings")
+        self.tab_principal.addTab(self.tab_page_settings,   "Settings")
         self.tab_principal.setTabPosition(QTabWidget.TabPosition.West);
+        self.tab_principal.currentChanged.connect(self.tab_principal_currentChanged);
         self.setCentralWidget(self.tab_principal)
         self.tabs = QTabWidget()
         self.tabs.setTabsClosable(False)  # Disable close buttons
@@ -80,6 +81,11 @@ class Browser(QMainWindow):
                     self.new_tab(url=js_data["tab"][i]["url"]);
         if self.tabs.count() == 0:
             self.new_tab(url=self.config["default"]["url"]);
+    def tab_principal_currentChanged(self, index):
+        if index == 8:
+            self.tab_page_settings.reload_data();
+        elif index == 1:
+            self.tab_page_download.reload_data();
     def closeEvent(self, event):
         js_data = {"tab" : []};
         for i in range(self.tabs.count()):

@@ -54,6 +54,38 @@ class DataWidget(QWidget):
         msgBox.setText("Done!!!");
         msgBox.exec();
 
+    def reload_data(self, elements=None, data=None):
+        if elements == None:
+            self.load_data(self.layout_js["elements"]);
+            self.reload_data(self.layout_js["elements"]);
+        else:
+            for child in elements:
+                if child["type"] == "panel":
+                    self.reload_data(child["elements"], child["data"]);
+                elif child["type"] == "text" or child["type"] == "url":
+                    if data != None:
+                        child["input"].setPlainText( data.get(child["field"]) );
+                elif child["type"] == "varchar" or child["type"] == "secret":
+                    if data != None:
+                        child["input"].setText( data.get(child["field"]) );
+                elif child["type"] == "combobox":
+                    index_selected = 0;
+                    i = 1;
+                    child["input"].clear();
+                    child["input"].add("", None);
+                    for file in os.listdir( child["font"]["directory"] ):
+                        try:
+                            path_file = os.path.join( child["font"]["directory"], file );
+                            if data != None and data.get(child["field"]) == path_file:
+                                index_selected = i;
+                            js = json.loads( open( path_file, "r" ).read() );
+                            child["input"].add( js[child["font"]["field"]], path_file );
+                        except:
+                            traceback.print_exc();
+                        finally:
+                            i = i + 1;
+                    child["input"].setCurrentIndex(index_selected);
+
     def load_data(self, elements):
         for child in elements:
             if child["type"] == "panel":
@@ -100,7 +132,6 @@ class DataWidget(QWidget):
                 for file in os.listdir( child["font"]["directory"] ):
                     try:
                         path_file = os.path.join( child["font"]["directory"], file );
-                        print(data.get(child["field"]) , path_file);
                         if data != None and data.get(child["field"]) == path_file:
                             index_selected = i;
                         js = json.loads( open( path_file, "r" ).read() );

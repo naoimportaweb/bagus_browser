@@ -27,6 +27,7 @@ class PanelSettings(QWidget):
         self.tab_settings.addTab(self.tab_settings_selected, "Selected")
         self.tab_settings_proxy = QWidget()
         self.tab_settings.addTab(self.tab_settings_proxy,    "Proxy")
+        self.tab_settings.currentChanged.connect(self.tab_settings_currentChanged);
         layout = QVBoxLayout();
         layout.addWidget(self.tab_settings);
         self.setLayout(layout);
@@ -37,8 +38,12 @@ class PanelSettings(QWidget):
         layout.addWidget(  self.tab_settigns_proxy_table);
         QLineWidget(layout, [btn_add], stretch_inicio=True);
         self.tab_settings_proxy.setLayout( layout );
+    def tab_settings_currentChanged(self, index):
+        if index == 0:
+            self.tab_settings_selected.reload_data();
+    def reload_data(self):
         self.load_proxys();
-
+        self.tab_settings_selected.reload_data();
     def load_proxys(self):
         files = os.listdir( self.DIR_PROXY );
         self.tab_settigns_proxy_table.cleanList();

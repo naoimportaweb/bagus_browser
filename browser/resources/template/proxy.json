@@ -2,6 +2,7 @@
     "elements" : [
     {"name" : "panel_proxy", "type" : "panel", "database" : { "file" : null, "type" : "json"}, "elements" : [
         {"name" : "txt_name",  "type" : "varchar", "label" : "Name:",  "field" : "name"},
-        {"name" : "txt_url" ,  "type" : "varchar", "label" : "Url:",   "field" : "url"}
+        {"name" : "txt_url" ,  "type" : "varchar", "label" : "Url:",   "field" : "url"},
+        {"name" : "txt_block_country", "type" : "varchar", "label" : "Block Country", "field" : "block_country"}
     ] } 
 ]}

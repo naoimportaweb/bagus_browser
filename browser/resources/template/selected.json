@@ -2,6 +2,7 @@
 "elements" : [
     {"name" : "panel_exemple", "type" : "panel", "database" : { "file" : null, "type" : "json"}, "elements" : [
         {"name" : "cmb_proxy", "type" : "combobox",   "label" : "Proxy:",   "field" : "proxy", "font" : {"type" : "file", "directory" : null, "field" : "name" }},
-        {"name" : "txt_downloads", "type" : "varchar", "label" : "Extension (download):", "field" : "download_extension"}
+        {"name" : "txt_downloads", "type" : "varchar", "label" : "Extension (download):", "field" : "download_extension"},
+        {"name" : "txt_block_country", "type" : "varchar", "label" : "Block Country", "field" : "block_country"}
     ] } 
 ]}

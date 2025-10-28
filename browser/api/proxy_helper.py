@@ -4,7 +4,7 @@ BROWSER_PATH = os.environ["BROWSER_PATH"]
 sys.path.append( BROWSER_PATH );
 
 from PySide6.QtNetwork import QNetworkProxy
-from PySide6.QtWidgets import QDialog, QWidget
+#from PySide6.QtWidgets import QDialog, QWidget, QMessageBox
 from PySide6.QtCore import Qt
 
 class ProxyHelper:
@@ -20,9 +20,7 @@ class ProxyHelper:
         elif itens[0] == "socks5":
             self.set_proxy_socks5(ip=itens[1].replace("//", ""), port=int(itens[2]));
     def clean_proxy(self):
-        reply = QMessageBox.question(self, "Proxy", "Do you really want to disable the proxy?", QMessageBox.Yes | QMessageBox.No);
-        if reply == QMessageBox.Yes:
-            self.set_proxy_clear();
+        self.set_proxy_clear();
     def set_proxy_socks5(self, ip="127.0.0.1", port=9050):
         proxy = QNetworkProxy();
         proxy.setType(QNetworkProxy.Socks5Proxy);

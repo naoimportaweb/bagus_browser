@@ -20,25 +20,35 @@ class PanelDownload(QWidget):
         btn_atualizar.clicked.connect(self.btn_atualizar_click);
         self.setLayout(layout);
         self.load_table();
+        self.in_execution = [];
+    def reload_data(self):
+        self.load_table();
     def load_table(self):
         DIR_DOWNLOAD = os.path.join( os.environ["USER_BROWSER_PATH"], "download");
+        self.table.cleanList();
         for file in os.listdir( DIR_DOWNLOAD ):
             print(os.path.join( DIR_DOWNLOAD, file ));
             buffer_js = json.loads( open( os.path.join( DIR_DOWNLOAD, file ), "r").read() );
             self.table.add([buffer_js["url"], buffer_js["filename"]], os.path.join( DIR_DOWNLOAD, file ) );
         #lines = sorted(lines, key=lambda k: k['page'].get('update_time', 0), reverse=True)
 
-    def download(self, url, filename):
+    def download(self, url, filename, config_path):
+        if url in self.in_execution:
+            return;
+        self.in_execution.append(url);
         os.system( 'curl -x socks5://127.0.0.1:9050 -L -O --output-dir '+ os.path.expanduser("~/Downloads") +' -k --retry 9999999999999 --retry-max-time 0 -C - ' + url );
+        os.unlink( config_path );
+        self.reload_data();
         #os.system( 'curl -L -O --output-dir '+ os.environ["BROSER_DIR_TMP"] +' -k --retry 9999999999999 --retry-max-time 0 -C - ' + url );
         #shutil.move( os.path.join( os.environ["BROSER_DIR_TMP"], filename ), os.path.join( os.path.expanduser("~/Downloads"), filename) );
     
     def table_double_click(self):
         buffer_js = json.loads( open(self.table.lista[ self.table.currentRow() ],"r").read() );
-        x = threading.Thread(target=self.download, args=(buffer_js["url"], buffer_js["filename"],));
+        x = threading.Thread(target=self.download, args=(buffer_js["url"], buffer_js["filename"], self.table.lista[ self.table.currentRow() ], ));
         x.start();
         
     def btn_atualizar_click(self):
+        self.reload_data();
         pass;
     
     def clam_result_str_to_json(self, clam_result_str):
