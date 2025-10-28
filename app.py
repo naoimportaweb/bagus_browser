@@ -42,6 +42,10 @@ def main():
         proxy_js = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r" ).read() );
         ph = ProxyHelper();
         ph.set_proxy( proxy_js["proxy"] );
+
+    # tem que aplicar as regras de segurança aqui, e dpois testar
+    # https://wtfismyip.com/json
+
     browser = Browser(f.diretorio)
     browser.show()
     sys.exit(app.exec());
