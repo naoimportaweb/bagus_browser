@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 BROWSER_PATH = os.environ["BROWSER_PATH"];
 sys.path.append( BROWSER_PATH );
 
-from PySide6.QtWidgets import QLayout, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QListWidget, QPushButton
+from PySide6.QtWidgets import QLayout, QVBoxLayout, QHBoxLayout, QWidget, QLineEdit, QListWidget, QPushButton, QMessageBox
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt, QUrl, Slot, QObject;
 from PySide6.QtWebChannel import QWebChannel
@@ -13,6 +13,7 @@ from PySide6.QtNetwork import QNetworkProxy
 
 from browser.api.project_helper import ProjectHelper;
 from browser.ui.custom_web_engine_page import CustomWebEnginePage;
+from browser.api.iplocation_helper import IPLocationHelper;
 
 DEBUG_PORT = '5588'
 DEBUG_URL = 'http://127.0.0.1:%s' % DEBUG_PORT
@@ -23,6 +24,7 @@ HISTORY_FILE = "history.json"
 class BrowserTab(QWidget):
     def __init__(self, browser, url=None, parent=None):
         super().__init__(parent)
+        self.parent = parent;
         layout = QVBoxLayout()
         self.browser = browser;
         self.profile = self.browser.profile;
@@ -79,6 +81,35 @@ class BrowserTab(QWidget):
             self.url_bar.setText(url);
             self.load_url();
 
+    def validar_pais_inicio(self):
+        js_settings = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r").read() );
+        if js_settings["block_country"].strip() != "":
+            self.page_iplocation = IPLocationHelper(parent=self.parent);
+            self.page_iplocation.loadFinished.connect(self.validar_pais_inicio_loadFinished);
+            self.page_iplocation.get_country();
+        else:
+            self.validar_pais_inicio_text(json.dumps({"YourFuckingCountryCode" : None}));
+    def validar_pais_inicio_loadFinished(self):
+        self.page_iplocation.toPlainText(self.validar_pais_inicio_text);
+    def validar_pais_inicio_text(self, data):
+        js_test = json.loads(data);
+        js_settings = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r").read() );
+        if js_settings.get("proxy") != None and js_settings.get("proxy").strip() != "" and os.path.exists(js_settings.get("proxy")):
+            js_proxy = json.loads( open( js_settings.get("proxy"), "r" ).read() );
+            js_settings["block_country"] = js_settings["block_country"] + js_proxy["block_country"];
+        if js_test["YourFuckingCountryCode"] == None or not js_test["YourFuckingCountryCode"].lower() in js_settings["block_country"].lower():
+            url = self.url_bar.text().strip()
+            if not url.startswith("http"):
+                url = "https://" + url
+            self.web_view.setUrl(url)
+            self.save_history(url)
+            self.web_view.setFocus()
+            self.history_list.hide()
+        else:
+            msgBox = QMessageBox();
+            msgBox.setText( "Você não pode acessar pois está no país:" + js_test["YourFuckingCountryCode"] );
+            msgBox.exec();
+
     def bt1_click(self):
         self.inspector = QWebEngineView()
         self.inspector.setWindowTitle('Web Inspector')
@@ -133,17 +164,18 @@ class BrowserTab(QWidget):
         self.history_list.hide()
     
     def load_url(self):
-        url = self.url_bar.text().strip()
-        if not url.startswith("http"):
-            url = "https://" + url
-        self.web_view.setUrl(url)
-        #backend = Backend()
-        #self.webchannel = QWebChannel(self)
-        #self.webchannel.registerObject("backend", backend)
-        #self.web_view.page().setWebChannel(self.webchannel)
-        self.save_history(url)
-        self.web_view.setFocus()
-        self.history_list.hide()
+        self.validar_pais_inicio();
+    #    url = self.url_bar.text().strip()
+    #    if not url.startswith("http"):
+    #        url = "https://" + url
+    #    self.web_view.setUrl(url)
+    #    #backend = Backend()
+    #    #self.webchannel = QWebChannel(self)
+    #    #self.webchannel.registerObject("backend", backend)
+    #    #self.web_view.page().setWebChannel(self.webchannel)
+    #    self.save_history(url)
+    #    self.web_view.setFocus()
+    #    self.history_list.hide()
     
     def atualizar_titulo_aba(self):
         extracted = tldextract.extract(self.url_bar.text());
