@@ -1,10 +1,12 @@
 import os, sys, inspect, json;
-
-from PySide6.QtCore import (QByteArray, QFile, QFileInfo, QSettings, QSaveFile, QTextStream, Qt, Slot)
+import asyncio, threading
+from PySide6.QtCore import (QByteArray, QFile, QFileInfo, QSettings, QSaveFile, QTextStream, Qt, Slot, QProcess)
 from PySide6.QtWidgets import (QMessageBox, QTextEdit, QDialog, QLabel, QGridLayout, QLineEdit, QPushButton)
 
 BROWSER_PATH = os.environ["BROWSER_PATH"]
 sys.path.append( BROWSER_PATH );
+
+from xmpp.account import XmppAccount;
 
 def criar_se_nao_existir(diretorio):
     if not os.path.exists( diretorio ):
@@ -32,7 +34,12 @@ class FormLogin(QDialog):
         btn_register_navegar.clicked.connect(self.start_browser_click)
         layout_login.addWidget(btn_register_navegar, 4, 1)
         self.setStyleSheet(self.load_styles());
-        self.setLayout(layout_login)
+        self.setLayout(layout_login);
+        threading.Thread(target=self.teste).start();
+    
+    def teste(self):
+        self.p = QProcess()
+        self.p.start("/usr/bin/python3", ["/home/userlinux/desenv/bagus_browser/xmpp/account.py"])
     
     def start_browser_click(self):
         if self.txt_login_username.text().strip() != "":

@@ -83,7 +83,7 @@ class BrowserTab(QWidget):
 
     def validar_pais_inicio(self):
         js_settings = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r").read() );
-        if js_settings["block_country"].strip() != "":
+        if js_settings.get("block_country") != None and js_settings["block_country"].strip() != "":
             self.page_iplocation = IPLocationHelper(parent=self.parent);
             self.page_iplocation.loadFinished.connect(self.validar_pais_inicio_loadFinished);
             self.page_iplocation.get_country();
@@ -185,7 +185,7 @@ class BrowserTab(QWidget):
                 index = i;
                 break;
         if index >= 0:
-            self.browser.tabs.setTabText( index , extracted.domain);
+            self.browser.tabs.setTabText( index , extracted.domain[0:20]);
     
     def update_url_bar(self, url):
         url = url;

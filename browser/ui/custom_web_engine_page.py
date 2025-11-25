@@ -47,7 +47,7 @@ class CustomWebEnginePage(QWebEnginePage):
         if os.path.exists(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"]):
             config_settings = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r" ).read() );
             extensao = get_file_extension_os(url.toString());
-            if extensao != None and extensao != "" and config_settings["download_extension"].find(extensao) >= 0:
+            if extensao != None and config_settings.get("download_extension") != None and extensao != "" and config_settings["download_extension"].find(extensao) >= 0:
                 localizado = False;
                 DIR_DOWNLOAD = os.path.join( os.environ["USER_BROWSER_PATH"], "download");
                 download_js = {"url" : url.toString(), "proxy" : True, "clamscan" : True, "directory" : None, "hash" : hashlib.md5( url.toString().encode() ).hexdigest(), "filename" : url.toString()[ url.toString().rfind("/") + 1: ], "date" :  f'{datetime.now():%Y-%m-%d %H:%M:%S%z}' };

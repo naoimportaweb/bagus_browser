@@ -11,6 +11,8 @@ class ProxyHelper:
     def __init__(self):
         pass;
     def set_proxy(self, proxy_config_path):
+        if proxy_config_path == None:
+            return;
         if proxy_config_path == None or proxy_config_path == "" or not os.path.exists(proxy_config_path):
             return;
         proxy_js = json.loads( open(proxy_config_path, "r").read() );

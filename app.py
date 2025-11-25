@@ -41,8 +41,10 @@ def main():
     if os.path.exists(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"]):
         proxy_js = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r" ).read() );
         ph = ProxyHelper();
-        ph.set_proxy( proxy_js["proxy"] );
-
+        ph.set_proxy( proxy_js.get("proxy") );
+    else:
+        with open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "w") as fx:
+            fx.write(json.dumps({}));
     # tem que aplicar as regras de segurança aqui, e dpois testar
     # https://wtfismyip.com/json
 
