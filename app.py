@@ -24,7 +24,8 @@ from browser.api.proxy_helper import ProxyHelper;
 
 def main():
     #QtWebEngineQuick.initialize(); # descobri que nao é necessário
-
+    if not os.path.exists(os.path.expanduser("~/bagus")):
+        os.makedirs(os.path.expanduser("~/bagus"));
     app = QApplication(sys.argv)
     f = FormLogin();
     f.exec();
