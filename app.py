@@ -24,6 +24,7 @@ from browser.api.proxy_helper import ProxyHelper;
 
 def main():
     #QtWebEngineQuick.initialize(); # descobri que nao é necessário
+
     app = QApplication(sys.argv)
     f = FormLogin();
     f.exec();
@@ -32,6 +33,8 @@ def main():
         f.diretorio = os.path.expanduser("~/bagus");
         if not os.path.exists(f.diretorio):
             os.makedirs(f.diretorio);
+    with open(os.path.expanduser("~/bagus/myass.json"), "w") as f:
+        f.write( json.dumps({ "url" : "https://wellington.tec.br/myass/", "token" : "UmaChaveSimetrica", "name"  : "publico",  "key"   : "UmaChaveSimetric", "algorithm" : "AES-256" }) );
     path_file_config = os.path.join( f.diretorio, "config.json" );
     if not os.path.exists(path_file_config):
         shutil.copy2( os.path.join(BROWSER_PATH,"data", "template.json"),  path_file_config );

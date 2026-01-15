@@ -61,8 +61,6 @@ instaledpackage(){
     fi
 }
 
-
-
 # Dada a lista de pacotes para Linux, fazer laço que verifica tudo
 #    nao pode passar se faltar alguma coisa
 for str in ${packages[@]}; do
@@ -93,8 +91,15 @@ for str in ${packages[@]}; do
     fi
 done
 
-
-
+apt-get install -y libxcb-cursor-dev
+pip3 install requests
+pip3 install PySide6
+pip3 install pycryptodome
+pip3 install beautifulsoup4
+pip3 install tldextract
+pip3 install adblockparser
+pip3 install xmltodict
+pip3 install slixmpp
 
 # a instalaçao em sí dos pacotes
 install(){
@@ -103,9 +108,9 @@ install(){
     fi
     echo "[+] Download do arquivo: ${URL}" 
     wget -q -O /tmp/bagusbagusgo.zip ${URL}
-    #if [ -d /tmp/bagusbagusgo-main/ ] ; then
-    #    rm -r /tmp/bagusbagusgo-main
-    #fi
+    if [ -d /tmp/bagus_browser-main/ ] ; then
+        rm -r /tmp/bagus_browser-main/
+    fi
     echo "[+] Descompactando /tmp/bagusbagusgo.zip" 
     unzip -qq /tmp/bagusbagusgo.zip -d /tmp/
     cp -r /tmp/bagus_browser-main/* ${DIR}
@@ -115,7 +120,6 @@ install(){
     chmod +x ${DIR}/start.sh
     ln -s ${DIR}/start.sh /bin/bagus
 }
-
 
 # aqui inicia a instalaçao, todas as dependencias estão
 #    instaladas até o momento.
