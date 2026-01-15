@@ -43,8 +43,6 @@ class PanelMyass(QWidget):
         if len(json.loads(work["result"]).keys()) > 0:
             f = FormWork(work);
             f.exec_();
-        else:
-            print(work);
         pass;
     
     def _loadFinished(self):
@@ -93,7 +91,6 @@ class FormWork(QDialog):
         super().__init__();
         self.resize(600, 320);
         self.work = work;
-        print(work);
         layout = QGridLayout();
         layout.setContentsMargins(20, 20, 20, 20);
         layout.setSpacing(10);

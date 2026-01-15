@@ -55,22 +55,18 @@ class XmppAccount(slixmpp.ClientXMPP):
         t = threading.Thread(target=self.send_all_thread);
         t.start();
     async def start(self, event):
-        print("Event", event);
         self.send_presence()
         await self.get_roster()
     def __send_chat__(self, msg):
         self.send_presence();
         self.send_message(mto=msg["to"],  mbody=msg["text"], mtype='chat');
-        print("Mandei:", msg);
     def send_chat(self, to, msg):
         self.messages.append({"id" : str(uuid.uuid4()), "send" : False, "text" : msg, "to" : to});
     def receive_chat(self, msg):
         #<message xml:lang="en" to="nao.importa.web@xmpp.jp" from="aied@xmpp.jp/converse.js-127670175" type="chat" id="3b40c186-5b84-4eb6-9886-6519eee223c2"><active xmlns="http://jabber.org/protocol/chatstates" /><request xmlns="urn:xmpp:receipts" /><origin-id xmlns="urn:xmpp:sid:0" id="3b40c186-5b84-4eb6-9886-6519eee223c2" /><body>ta</body></message>
         from_xmpp = str(msg["from"])[:str(msg["from"]).find("/")];
-        print(msg["body"], "de", from_xmpp);
         if msg['type'] in ('chat', 'normal'):
             self.send_chat(from_xmpp, "Recebido: " + msg["body"] );
-            #msg.reply("Thanks for sending\n%(body)s" % msg).send()
 
 def teste_mensagem(x):
     for i in range(10):

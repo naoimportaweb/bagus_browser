@@ -1,4 +1,4 @@
-import sys, uuid, json, os, traceback, shutil, threading
+import sys, uuid, json, os, traceback, shutil, threading, urllib
 
 BROWSER_PATH = os.environ["BROWSER_PATH"]
 sys.path.append( BROWSER_PATH );
@@ -27,7 +27,6 @@ class PanelDownload(QWidget):
         DIR_DOWNLOAD = os.path.join( os.environ["USER_BROWSER_PATH"], "download");
         self.table.cleanList();
         for file in os.listdir( DIR_DOWNLOAD ):
-            print(os.path.join( DIR_DOWNLOAD, file ));
             buffer_js = json.loads( open( os.path.join( DIR_DOWNLOAD, file ), "r").read() );
             self.table.add([buffer_js["url"], buffer_js["filename"]], os.path.join( DIR_DOWNLOAD, file ) );
         #lines = sorted(lines, key=lambda k: k['page'].get('update_time', 0), reverse=True)
@@ -36,11 +35,10 @@ class PanelDownload(QWidget):
         if url in self.in_execution:
             return;
         self.in_execution.append(url);
-        os.system( 'curl -x socks5://127.0.0.1:9050 -L -O --output-dir '+ os.path.expanduser("~/Downloads") +' -k --retry 9999999999999 --retry-max-time 0 -C - ' + url );
+        command = 'curl --socks5-hostname 127.0.0.1:9050 -L -O --output-dir '+ os.path.expanduser("~/Downloads") +' -k --retry 99 --retry-max-time 0 -C - \'' + url.replace(" ", "") + "\'";
+        os.system( command );
         os.unlink( config_path );
         self.reload_data();
-        #os.system( 'curl -L -O --output-dir '+ os.environ["BROSER_DIR_TMP"] +' -k --retry 9999999999999 --retry-max-time 0 -C - ' + url );
-        #shutil.move( os.path.join( os.environ["BROSER_DIR_TMP"], filename ), os.path.join( os.path.expanduser("~/Downloads"), filename) );
     
     def table_double_click(self):
         buffer_js = json.loads( open(self.table.lista[ self.table.currentRow() ],"r").read() );
