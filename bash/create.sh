@@ -16,7 +16,12 @@ createopen(){
         echo -n "$PASSWORD" | /usr/sbin/cryptsetup open --type luks /home/$SUDO_USER/.$1.img $1
         mkdir /tmp/$1
         mount /dev/mapper/$1 /tmp/$1
-        chown -R $SUDO_USER:$SUDO_USER "/tmp/$1/"
+        if df -h | grep -q "/dev/mapper/$1"; then
+            chown -R $SUDO_USER:$SUDO_USER "/tmp/$1/"
+        else
+            rm -r /tmp/$1
+        fi
+
     else
         echo "Já está aberto"
     fi

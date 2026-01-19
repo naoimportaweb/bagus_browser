@@ -138,7 +138,7 @@ class FormMyass(QDialog):
     def send_server(self, envelope):
         try:
             self.page.loadFinished.connect(self._loadFinished);
-            self.page.create_work( hashlib.md5((self.url + datetime.today().strftime('%Y-%m-%d') ).encode()).hexdigest(), envelope["data"]["workflow"], envelope);
+            self.page.create_work( hashlib.md5((self.url + datetime.today().strftime('%Y-%m-%d') + self.config["name"] ).encode()).hexdigest(), envelope["data"]["workflow"], envelope);
         except:
             msgBox = QMessageBox();
             msgBox.setText("MyAss connection error!!!");
