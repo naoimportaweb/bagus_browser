@@ -20,7 +20,6 @@ class WebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
         super().__init__(parent);
         self.domains_block = open( os.path.join(os.environ["USER_BROWSER_PATH"], "ad_hosts_block.txt"), "r").read();
         self.analyze = analyze;
-        logging.basicConfig(filename= os.path.join( os.environ["USER_BROWSER_PATH"], "log", "block.log"), format='%(asctime)s %(message)s',filemode='a', level=logging.INFO)
         self.logger_block = setup_logger( "block", os.path.join( os.environ["USER_BROWSER_PATH"], "log", "block.log"));
     
     def interceptRequest(self, info):

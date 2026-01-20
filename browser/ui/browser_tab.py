@@ -1,6 +1,5 @@
 
 import tldextract, sys, uuid, json, os, importlib, re, base64, traceback
-#import logging
 from urllib.parse import urlparse
 BROWSER_PATH = os.environ["BROWSER_PATH"];
 sys.path.append( BROWSER_PATH );
@@ -14,6 +13,7 @@ from PySide6.QtNetwork import QNetworkProxy
 from browser.api.project_helper import ProjectHelper;
 from browser.ui.custom_web_engine_page import CustomWebEnginePage;
 from browser.api.iplocation_helper import IPLocationHelper;
+from browser.api.logger_helper import *
 
 DEBUG_PORT = '5588'
 DEBUG_URL = 'http://127.0.0.1:%s' % DEBUG_PORT
@@ -40,7 +40,7 @@ class BrowserTab(QWidget):
         self.history_list.itemActivated.connect(self.select_history_item)
         #os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = '--proxy-server="socks5://127.0.0.1:9050"';
         self.web_view = QWebEngineView();
-        
+        self.logger_navigate = setup_logger( "navigate", os.path.join( os.environ["USER_BROWSER_PATH"], "log", "navigate.log"));
 
         self.project_helper = ProjectHelper();
         self.web_view.setPage(CustomWebEnginePage(self.browser.profile, self))
@@ -121,6 +121,7 @@ class BrowserTab(QWidget):
         self.history_list.hide()
         if url.toString() not in self.browser.history:
             self.browser.history.append(url.toString())
+            self.logger_navigate.info(url.toString());
         self.browser.save();
 
     def on_load_started_signal(self):
