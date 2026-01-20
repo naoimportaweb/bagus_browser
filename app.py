@@ -40,9 +40,10 @@ def main():
     path_file_config = os.path.join( f.diretorio, "config.json" );
     if not os.path.exists(path_file_config):
         shutil.copy2( os.path.join(BROWSER_PATH,"data", "template.json"),  path_file_config );
-
     os.environ["BROSER_DIR_SETTINGS_FILE_NAME"] = os.path.join( os.environ["USER_BROWSER_PATH"], os.environ["BROWSER_CONFIG"], "settings.selected.json" );
     os.environ["BROSER_DIR_TMP"] = os.path.join( os.environ["USER_BROWSER_PATH"], "tmp");
+    if not os.path.exists(os.path.join( os.environ["USER_BROWSER_PATH"], os.environ["BROWSER_CONFIG"])):
+        os.makedirs(os.path.join( os.environ["USER_BROWSER_PATH"], os.environ["BROWSER_CONFIG"]));
     if os.path.exists(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"]):
         proxy_js = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r" ).read() );
         ph = ProxyHelper();

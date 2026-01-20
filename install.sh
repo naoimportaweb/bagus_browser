@@ -14,6 +14,7 @@ URL='https://codeload.github.com/naoimportaweb/bagus_browser/zip/refs/heads/main
 
 # Lista de pacotes Linux que serão instalados ou atualizados
 packages=("python3-pip" "unzip" "tor" "python3-pip")
+apt install cryptsetup -y
 #TODO: PARA CADA PROJETO TEM QUE DIZER QUAL PACOTE AQUI..... E DESCREVER CADA UM
 
 touch /etc/pip.conf
