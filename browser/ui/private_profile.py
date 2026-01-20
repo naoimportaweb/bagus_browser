@@ -28,10 +28,15 @@ class WebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
         ex = tldextract.extract( url );
         if not self.analyze.allow(url):
             info.block(True);
+            print("URL interceptada pela classe Analyze: ", url);
+            return;
         domain = ex.subdomain + "." + ex.domain + "." + ex.suffix;
         if self.domains_block.find( domain ) >= 0:
             self.logger_block.info(url);
             info.block(True);
+            print("URL interceptada por domínio bloqueado: ", url);
+            return;
+        info.block(False);
 
 #https://doc.qt.io/qt-6/qtwebengine-webenginequick-quicknanobrowser-example.html
 class PrivateProfile(QWebEngineProfile):
@@ -41,12 +46,12 @@ class PrivateProfile(QWebEngineProfile):
         self.analyze = analyze;
         self.intercept = WebEngineUrlRequestInterceptor(analyze);
         self.setUrlRequestInterceptor(self.intercept);
-        #self.setPersistentCookiesPolicy(QWebEngineProfile.NoPersistentCookies)
         self.setPersistentCookiesPolicy(QWebEngineProfile.ForcePersistentCookies);
         self.setHttpCacheType(QWebEngineProfile.MemoryHttpCache)
         self.setPersistentPermissionsPolicy(QWebEngineProfile.PersistentPermissionsPolicy.StoreOnDisk);
         self.setPersistentStoragePath( os.path.join( self.path, "default" ) )
         self.setCachePath( os.path.join( self.path, "default" ) );
+        #self.setHttpUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36");
         settings = self.settings()
         settings.setAttribute(QWebEngineSettings.LocalStorageEnabled,               config["settings"]["LocalStorageEnabled"]); 
         settings.setAttribute(QWebEngineSettings.XSSAuditingEnabled,                config["settings"]["XSSAuditingEnabled"]);

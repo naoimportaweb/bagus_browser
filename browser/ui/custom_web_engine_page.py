@@ -23,11 +23,13 @@ class CustomWebEnginePage(QWebEnginePage):
         self.certificateError.connect( self.certificateError_signal );
         self.urlChanged.connect(self.urlChanged_signal);
         self.loadStarted.connect(self.loadStarted_signal);
+        self.navigationRequested.connect(self.navigationRequested_signal); 
         self.logger_javascript = setup_logger( "javascript", os.path.join( os.environ["USER_BROWSER_PATH"], "log", "javascript.log"));
     def loadStarted_signal(self):
         pass;
-    def navigationRequested(self, request):
-        pass;
+    def navigationRequested_signal(self, request):
+        print(request.isMainFrame(), request.navigationType(), request.url().toString()[:50]);
+        request.accept();
     def newWindowRequested(self, request):
         pass;
     def urlChanged_signal(self, url):

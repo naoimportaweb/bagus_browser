@@ -26,8 +26,8 @@ def main():
     #QtWebEngineQuick.initialize(); # descobri que nao é necessário
     if not os.path.exists(os.path.expanduser("~/bagus")):
         os.makedirs(os.path.expanduser("~/bagus"));
-    
-    app = QApplication(sys.argv)
+    sys.argv.append('--no-sandbox');
+    app = QApplication(["--disable-web-security"])
     f = FormLogin();
     f.exec();
     
