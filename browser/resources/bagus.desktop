@@ -5,5 +5,5 @@ GenericName=BAGUS
 Comment=BAGUS
 Categories=Other;Network;Security;
 Exec=python3 /opt/bagus_browser/app.py
-Icon=/opt/bagus_browser/browser/resources/bagus.jpg
+Icon=/opt/bagus_browser/browser/resources/bagus.png
 StartupWMClass=BAGUS +
