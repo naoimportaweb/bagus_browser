@@ -1,6 +1,7 @@
 {
     "active" : true,
     "module" : "myass",
+    "autorun" : true,
     "path"   : "src/myass.py",
     "name"   : "Myass"
 }

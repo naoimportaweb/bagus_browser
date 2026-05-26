@@ -91,6 +91,7 @@ class BrowserTab(QWidget):
             self.validar_pais_inicio_text(json.dumps({"YourFuckingCountryCode" : None}));
     def validar_pais_inicio_loadFinished(self):
         self.page_iplocation.toPlainText(self.validar_pais_inicio_text);
+    
     def validar_pais_inicio_text(self, data):
         js_test = json.loads(data);
         js_settings = json.loads( open(os.environ["BROSER_DIR_SETTINGS_FILE_NAME"], "r").read() );

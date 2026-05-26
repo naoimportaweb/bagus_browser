@@ -12,7 +12,7 @@ from browser.api.aes_helper import *
 
 #Vocë tem que criar o arquivo ~/bagus/myass.jso e escrever:
 #{
-#        "url" : "https://wellington.tec.br/myass/",
+#        "url" : "https://www.wellington.tec.br/myassistent/",
 #        "token" : "UmaChaveSimetrica",
 #        "name"  : "publico",
 #        "key"   : "UmaChaveSimetric"
@@ -26,7 +26,7 @@ class MyassHelper(QWebEnginePage):
         self.path_config = os.path.join(os.path.expanduser("~/bagus/"), "myass.json");
         self.config = None;
         if not os.path.exists(self.path_config):
-            self.config = {"url" : "https://wellington.tec.br/myass/", "token" : "UmaChaveSimetrica",  "name"  : "publico", "key"   : "UmaChaveSimetric", "algorithm" : "AES-256" };
+            self.config = {"url" : "https://www.wellington.tec.br/myassistent/", "token" : "UmaChaveSimetrica",  "name"  : "publico", "key"   : "UmaChaveSimetric", "algorithm" : "AES-256" };
             with open(self.path_config, "w") as f:
                 f.write( json.dumps( self.config, ensure_ascii=False ) );
         else:

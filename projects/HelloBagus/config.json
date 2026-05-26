@@ -1,5 +1,6 @@
 {
     "active" : true,
+    "autorun" : false,
     "module" : "hello",
     "path"   : "src/hello.py",
     "name"   : "Hello"
